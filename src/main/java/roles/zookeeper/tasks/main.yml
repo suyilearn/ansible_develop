@@ -1,0 +1,37 @@
+- name: run zookeeper container
+  docker:
+    name: zookeeper
+    image: "{{ zookeeper_image }}"
+    state: reloaded
+    detach: true
+    net: "host"
+    env:
+      MYID: "{{ zookeeper_id }}"
+      SERVERS: "{{ zookeeper_servers_list }}"
+    restart_policy: always
+  tags:
+    - zookeeper
+
+- name: register zookeeper service 
+  uri: 
+     url: "http://localhost:8500/v1/agent/service/register"
+     validate_certs: "no"
+     method: PUT
+     HEADER_Content-Type: "application/json"
+     body: "{{ lookup('template', 'templates/zookepeer-service.json') }}"
+     body_format: json
+  register: result
+  until: result.status == 200
+  retries: 3
+  delay: 10
+  changed_when: false
+  when: service_discovery == "consul"
+  tags:
+    - zookeeper
+
+#
+#  consul:
+#    service_name: zookeeper
+#    service_port: "{{ zookeeper_client_port }}"
+#    tags: zookeeper
+#
