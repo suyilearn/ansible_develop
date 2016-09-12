@@ -1,0 +1,16 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+.gitignore
+.idea/
+ansible_develop2.iml
+src/main/java/roles/ai_consumer/
+src/main/java/roles/ai_dc/
+src/main/java/roles/ai_dv/
+src/main/java/roles/usercenter/
